@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Marriage & Divorce Rates Visualization</title>
+  <!-- Include the latest D3.js CDN -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .chart-container {
+      margin-bottom: 3rem;
+    }
+
+    .axis-label {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-anchor: middle;
+    }
+
+    .line-legend {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Marriage & Divorce Rates Visualization</h1>
+
+  <!-- 1) Scatter Plot for Marriage Rate -->
+  <div id="marriage-scatter" class="chart-container"></div>
+
+  <!-- 2) Scatter Plot for Divorce Rate -->
+  <div id="divorce-scatter" class="chart-container"></div>
+
+  <!-- 3) Combined Line Chart for Marriage & Divorce Rates -->
+  <div id="multi-line-chart" class="chart-container"></div>
+
+  <script>
+    // Define margins and chart dimensions
+    const margin = { top: 50, right: 60, bottom: 50, left: 60 },
+          width  = 600 - margin.left - margin.right,
+          height = 400 - margin.top  - margin.bottom;
+
+    // Load the CSV data
+    d3.csv("marriage-rate-and-divorce-rate.csv").then(data => {
+      // Convert strings to numbers
+      data.forEach(d => {
+        d.Year  = +d.Year;
+        d.Count = +d.Count;
+      });
+
+      // Separate data into two arrays
+      const marriageData = data.filter(d => d["General Marriage_Rate_and Divorce_Rate"] === "Marriage Rate");
+      const divorceData  = data.filter(d => d["General Marriage_Rate_and Divorce_Rate"] === "Divorce Rate");
+
+      // 1) SCATTER PLOT: Year vs. Marriage Rate
+     
+      const svgMarriage = d3.select("#marriage-scatter")
+        .append("svg")
+        .attr("width",  width + margin.left + margin.right)
+        .attr("height", height + margin.top  + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      // X scale (Year)
+      const xScaleMarriage = d3.scaleLinear()
+        .domain(d3.extent(marriageData, d => d.Year))
+        .range([0, width]);
+
+      // Y scale (Marriage Rate)
+      const yScaleMarriage = d3.scaleLinear()
+        .domain([0, d3.max(marriageData, d => d.Count)])
+        .range([height, 0]);
+
+      // Axes
+      const xAxisMarriage = d3.axisBottom(xScaleMarriage).tickFormat(d3.format("d"));
+      const yAxisMarriage = d3.axisLeft(yScaleMarriage);
+
+      // Append axes
+      svgMarriage.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(xAxisMarriage);
+
+      svgMarriage.append("g")
+        .call(yAxisMarriage);
+
+      // Circles for Marriage Rate
+      svgMarriage.selectAll(".marriage-circle")
+        .data(marriageData)
+        .enter()
+        .append("circle")
+        .attr("class", "marriage-circle")
+        .attr("cx", d => xScaleMarriage(d.Year))
+        .attr("cy", d => yScaleMarriage(d.Count))
+        .attr("r", 5)
+        .attr("fill", "steelblue");
+
+      // X-axis label
+      svgMarriage.append("text")
+        .attr("class", "axis-label")
+        .attr("x", width / 2)
+        .attr("y", height + 40)
+        .style("text-anchor", "middle")
+        .text("Year");
+
+      // Y-axis label
+      svgMarriage.append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -45)
+        .style("text-anchor", "middle")
+        .text("Marriage Rate");
+
+      // Chart title
+      svgMarriage.append("text")
+        .attr("class", "chart-title")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .style("text-anchor", "middle")
+        .text("Year vs. Marriage Rate");
+
+      // --------------------------------------------------------------------------------
+      // 2) SCATTER PLOT: Year vs. Divorce Rate
+      // --------------------------------------------------------------------------------
+      const svgDivorce = d3.select("#divorce-scatter")
+        .append("svg")
+        .attr("width",  width + margin.left + margin.right)
+        .attr("height", height + margin.top  + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      // X scale (Year)
+      const xScaleDivorce = d3.scaleLinear()
+        .domain(d3.extent(divorceData, d => d.Year))
+        .range([0, width]);
+
+      // Y scale (Divorce Rate)
+      const yScaleDivorce = d3.scaleLinear()
+        .domain([0, d3.max(divorceData, d => d.Count)])
+        .range([height, 0]);
+
+      // Axes
+      const xAxisDivorce = d3.axisBottom(xScaleDivorce).tickFormat(d3.format("d"));
+      const yAxisDivorce = d3.axisLeft(yScaleDivorce);
+
+      // Append axes
+      svgDivorce.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(xAxisDivorce);
+
+      svgDivorce.append("g")
+        .call(yAxisDivorce);
+
+      // Circles for Divorce Rate
+      svgDivorce.selectAll(".divorce-circle")
+        .data(divorceData)
+        .enter()
+        .append("circle")
+        .attr("class", "divorce-circle")
+        .attr("cx", d => xScaleDivorce(d.Year))
+        .attr("cy", d => yScaleDivorce(d.Count))
+        .attr("r", 5)
+        .attr("fill", "tomato");
+
+      // X-axis label
+      svgDivorce.append("text")
+        .attr("class", "axis-label")
+        .attr("x", width / 2)
+        .attr("y", height + 40)
+        .style("text-anchor", "middle")
+        .text("Year");
+
+      // Y-axis label
+      svgDivorce.append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -45)
+        .style("text-anchor", "middle")
+        .text("Divorce Rate");
+
+      // Chart title
+      svgDivorce.append("text")
+        .attr("class", "chart-title")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .style("text-anchor", "middle")
+        .text("Year vs. Divorce Rate");
+
+      // --------------------------------------------------------------------------------
+      // 3) COMBINED LINE CHART: Year vs. Rate (Two Lines: Marriage & Divorce)
+      // --------------------------------------------------------------------------------
+      const svgLine = d3.select("#multi-line-chart")
+        .append("svg")
+        .attr("width",  width + margin.left + margin.right)
+        .attr("height", height + margin.top  + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      // Combine marriage + divorce to get full Year extent and max rate
+      const allYears = data.map(d => d.Year);
+      const minYear  = d3.min(allYears);
+      const maxYear  = d3.max(allYears);
+
+      const allRates = data.map(d => d.Count);
+      const maxRate  = d3.max(allRates);
+
+      // Scales for the line chart
+      const xScaleLine = d3.scaleLinear()
+        .domain([minYear, maxYear])
+        .range([0, width]);
+
+      const yScaleLine = d3.scaleLinear()
+        .domain([0, maxRate])
+        .range([height, 0]);
+
+      // Axes
+      const xAxisLine = d3.axisBottom(xScaleLine).tickFormat(d3.format("d"));
+      const yAxisLine = d3.axisLeft(yScaleLine);
+
+      // Append axes
+      svgLine.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(xAxisLine);
+
+      svgLine.append("g")
+        .call(yAxisLine);
+
+      // Line generator for marriage data
+      const lineMarriage = d3.line()
+        .x(d => xScaleLine(d.Year))
+        .y(d => yScaleLine(d.Count));
+
+      // Line generator for divorce data
+      const lineDivorce = d3.line()
+        .x(d => xScaleLine(d.Year))
+        .y(d => yScaleLine(d.Count));
+
+      // Append the marriage line
+      svgLine.append("path")
+        .datum(marriageData)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("d", lineMarriage);
+
+      // Append the divorce line
+      svgLine.append("path")
+        .datum(divorceData)
+        .attr("fill", "none")
+        .attr("stroke", "tomato")
+        .attr("stroke-width", 2)
+        .attr("d", lineDivorce);
+
+      // X-axis label
+      svgLine.append("text")
+        .attr("class", "axis-label")
+        .attr("x", width / 2)
+        .attr("y", height + 40)
+        .style("text-anchor", "middle")
+        .text("Year");
+
+      // Y-axis label
+      svgLine.append("text")
+        .attr("class", "axis-label")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -45)
+        .style("text-anchor", "middle")
+        .text("Rate");
+
+      // Chart title
+      svgLine.append("text")
+        .attr("class", "chart-title")
+        .attr("x", width / 2)
+        .attr("y", -10)
+        .style("text-anchor", "middle")
+        .text("Year vs. Marriage & Divorce Rates (Line Chart)");
+
+      // Optional: Simple Legend
+      svgLine.append("rect")
+        .attr("x", width - 110)
+        .attr("y", 10)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill", "steelblue");
+
+      svgLine.append("text")
+        .attr("class", "line-legend")
+        .attr("x", width - 95)
+        .attr("y", 19)
+        .text("Marriage Rate");
+
+      svgLine.append("rect")
+        .attr("x", width - 110)
+        .attr("y", 30)
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill", "tomato");
+
+      svgLine.append("text")
+        .attr("class", "line-legend")
+        .attr("x", width - 95)
+        .attr("y", 39)
+        .text("Divorce Rate");
+    });
+  </script>
+</body>
+</html>
