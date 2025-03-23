@@ -1,0 +1,23 @@
+body {
+    font-family: sans-serif;
+  }
+  
+  .tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: lightgray;
+    border: 0px;
+    border-radius: 4px;
+    pointer-events: none;
+  }
+  
+  .node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+  }
+  
+  .link {
+    stroke-opacity: 0.6;
+  }

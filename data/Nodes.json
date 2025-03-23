@@ -1,0 +1,93 @@
+[
+    {
+        "id": "harry",
+        "name": "Harry Potter",
+        "movie": "Harry Potter and the Sorcerer's Stone",
+        "description": "The young wizard with a lightning bolt scar.",
+        "totalLineNumber": 120
+    },
+    {
+        "id": "hermione",
+        "name": "Hermione Granger",
+        "movie": "Harry Potter and the Sorcerer's Stone",
+        "description": "Harry's clever and resourceful friend.",
+        "totalLineNumber": 110
+    },
+    {
+        "id": "ron",
+        "name": "Ron Weasley",
+        "movie": "Harry Potter and the Sorcerer's Stone",
+        "description": "Harry's loyal and humorous friend.",
+        "totalLineNumber": 105
+    },
+    {
+        "id": "frodo",
+        "name": "Frodo Baggins",
+        "movie": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "The young hobbit who embarks on a perilous journey.",
+        "totalLineNumber": 130
+    },
+    {
+        "id": "aragorn",
+        "name": "Aragorn",
+        "movie": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "The skilled ranger and protector of Frodo.",
+        "totalLineNumber": 90
+    },
+    {
+        "id": "gandalf",
+        "name": "Gandalf",
+        "movie": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "The wise wizard guiding the fellowship.",
+        "totalLineNumber": 95
+    },
+    {
+        "id": "luke",
+        "name": "Luke Skywalker",
+        "movie": "Star Wars: A New Hope",
+        "description": "The young Jedi who battles the Empire.",
+        "totalLineNumber": 115
+    },
+    {
+        "id": "leia",
+        "name": "Princess Leia",
+        "movie": "Star Wars: A New Hope",
+        "description": "Leader of the Rebel Alliance and Luke's sister.",
+        "totalLineNumber": 100
+    },
+    {
+        "id": "legolas",
+        "name": "Legolas",
+        "movie": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "The elven archer from Mirkwood.",
+        "totalLineNumber": 80
+    },
+    {
+        "id": "gimli",
+        "name": "Gimli",
+        "movie": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "A stout and brave dwarf warrior.",
+        "totalLineNumber": 85
+    },
+    {
+        "id": "vader",
+        "name": "Darth Vader",
+        "movie": "Star Wars: A New Hope",
+        "description": "A powerful Sith Lord and father of Luke.",
+        "totalLineNumber": 125
+    },
+    {
+        "id": "emperor",
+        "name": "Emperor Palpatine",
+        "movie": "Star Wars: A New Hope",
+        "description": "The sinister ruler behind the Galactic Empire.",
+        "totalLineNumber": 110
+    },
+    {
+        "id": "voldemort",
+        "name": "Lord Voldemort",
+        "movie": "Harry Potter and the Sorcerer's Stone",
+        "description": "The dark wizard seeking immortality and power.",
+        "totalLineNumber": 140
+    }
+]
